@@ -64,7 +64,7 @@ EM.run do
     if data['text'] =~ /ご招待/
       ws.send({
         type: 'message',
-        text: "チャネル登録はこちら https://kax-max.herokuapp.com/",
+        text: "チャネル登録はこちら https://kaz-max.herokuapp.com/",
         channel: 'G5UD4UC79',
       }.to_json)
     end
