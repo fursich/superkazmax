@@ -36,7 +36,7 @@ EM.run do
     p [:message, data]
 
     if !data.has_key?('reply_to') && data['subtype'] != "bot_message"
-      if data['content'] =~ /@superkazmax/ && data['text'] =~ /アーカイブして|保存して/
+      if data['content'] =~ /(@superkazmax).*(アーカイブして|保存して)/
         if data['text'] =~ /<(https:\/\/kaz-max.slack.com\/archives\/.+)>/
           ws.send({
             type: 'message',
@@ -51,8 +51,13 @@ EM.run do
         elsif data['text'] =~ /<(https?:\/\/.+)>/
           ws.send({
             type: 'message',
-            text: "ふむふむ良記事\n #{$1}",
+            text: "ふむふむ良記事",
             channel: data['channel'],
+          }.to_json)
+          ws.send({
+            type: 'message',
+            text: "#{$1}",
+            channel: "G5V08JHHQ",
           }.to_json)
         else
           ws.send({
