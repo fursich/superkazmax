@@ -35,8 +35,8 @@ EM.run do
     data = JSON.parse(event.data)
     # p [:message, data]
 
-    if !data.has_key?('reply_to') && data['subtype'] != "bot_message" && data['channel']!='U563F02RK'
-      if data['text'] =~ /(<@U5THEG8UA>).*(アーカイブ|保存|save)/
+    if !data.has_key?('reply_to') && data['subtype'] != "bot_message" && data['channel']!='C5V0WKG90'
+      if data['text'] =~ /(<@U5THEG8UA>)/
         if data['text'] =~ /<(https:\/\/kaz-max.slack.com\/archives\/.+)>/
           ws.send({
             type: 'message',
@@ -46,7 +46,7 @@ EM.run do
           ws.send({
             type: 'message',
             text: "#{$1}",
-            channel: "U563F02RK",
+            channel: "C5V0WKG90",
           }.to_json)
         elsif data['text'] =~ /<(https?:\/\/.+)>/
           ws.send({
@@ -57,7 +57,7 @@ EM.run do
           ws.send({
             type: 'message',
             text: "#{$1}",
-            channel: "U563F02RK",
+            channel: "C5V0WKG90",
           }.to_json)
         else
           ws.send({
@@ -69,7 +69,7 @@ EM.run do
       end
     end
 
-    if data['text'] =~ /superkazmax/i || data['text'] =~ /<@U5THEG8UA>/
+    if data['text'] =~ /kazmax/i || data['text'] =~ /カズマさん/
       random_emoji = emoji.keys[rand(0..emoji.size-1)]
       ws.send({
         type: 'message',
@@ -101,10 +101,18 @@ EM.run do
           text: "君は誰？",
           channel: data['channel'],
         }.to_json)
+      elsif (r < 8)
+        random_emoji = emoji.keys[rand(0..emoji.size-1)]
+        ws.send({
+          type: 'message',
+          text: ":#{random_emoji}:",
+          channel: data['channel'],
+          timestamp: data['ts'],
+        }.to_json)
       else
         ws.send({
           type: 'message',
-          text: "ふふふ",
+          text: "(ニヤニヤ)",
           channel: data['channel'],
         }.to_json)
       end
