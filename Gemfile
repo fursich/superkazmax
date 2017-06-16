@@ -6,3 +6,4 @@ gem 'json'
 gem 'faye-websocket'
 gem 'eventmachine'
 
+gem 'puma'

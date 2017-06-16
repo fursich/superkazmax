@@ -20,6 +20,7 @@ GEM
     http_parser.rb (0.6.0)
     json (2.1.0)
     public_suffix (2.0.5)
+    puma (3.9.1)
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.4)
@@ -35,6 +36,10 @@ DEPENDENCIES
   faye-websocket
   http
   json
+  puma
+
+RUBY VERSION
+   ruby 2.3.1p112
 
 BUNDLED WITH
    1.14.6
