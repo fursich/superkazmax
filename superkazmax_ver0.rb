@@ -36,7 +36,7 @@ EM.run do
     p [:message, data]
 
     if !data.has_key?('reply_to') && data['subtype'] != "bot_message"
-      if data['content'] =~ /<@U5THEG8UA>/ && data['text'] =~ /アーカイブして|保存して/
+      if data['content'] =~ /@superkazmax/ && data['text'] =~ /アーカイブして|保存して/
         if data['text'] =~ /<(https:\/\/kaz-max.slack.com\/archives\/.+)>/
           ws.send({
             type: 'message',
