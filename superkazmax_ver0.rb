@@ -40,7 +40,7 @@ EM.run do
       ws.send({
         type: 'message',
         text: ":#{random_emoji}:",
-        channel: 'G5UD4UC79',
+        channel: data['channel'],
         timestamp: data['ts'],
       }.to_json)
     end
@@ -49,7 +49,7 @@ EM.run do
       ws.send({
         type: 'message',
         text: "ご機嫌はいかがかな？<@#{data['user']}>さん",
-        channel: 'G5UD4UC79',
+        channel: data['channel'],
       }.to_json)
     end
 
@@ -57,7 +57,7 @@ EM.run do
       ws.send({
         type: 'message',
         text: "<@#{data['user']}>たんおっはよ〜♪",
-        channel: 'G5UD4UC79',
+        channel: data['channel'],
       }.to_json)
     end
 
@@ -65,7 +65,7 @@ EM.run do
       ws.send({
         type: 'message',
         text: "チャネル登録はこちら https://kaz-max.herokuapp.com/",
-        channel: 'G5UD4UC79',
+        channel: data['channel'],
       }.to_json)
     end
 
@@ -74,14 +74,14 @@ EM.run do
         ws.send({
           type: 'message',
           text: "エエ話や〜｡\n #{$1}",
-          channel: 'G5UD4UC79',
+          channel: data['channel'],
         }.to_json)
       else
         if data['text'] =~ /<(https?:\/\/.+)>/
           ws.send({
             type: 'message',
             text: "ふむふむ良記事\n #{$1}",
-            channel: 'G5UD4UC79',
+            channel: data['channel'],
           }.to_json)
         end
       end
