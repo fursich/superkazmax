@@ -66,11 +66,13 @@ EM.run do
           type: 'message',
           text: "君は誰？",
           channel: data['channel'],
+        }.to_json)
       else
         ws.send({
           type: 'message',
           text: "ふふふ",
           channel: data['channel'],
+        }.to_json)
       end
     end
 
