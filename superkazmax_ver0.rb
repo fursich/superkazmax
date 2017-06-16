@@ -33,7 +33,7 @@ EM.run do
 
   ws.on :message do |event|
     data = JSON.parse(event.data)
-    # p [:message, data]
+    p [:message, data]
 
     if !data.has_key?('reply_to') && data['subtype'] != "bot_message" && data['channel']=='G5V08JHHQ'
       if data['text'] =~ /(<@U5THEG8UA>).*(アーカイブ|保存|save)/
