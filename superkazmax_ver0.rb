@@ -33,10 +33,10 @@ EM.run do
 
   ws.on :message do |event|
     data = JSON.parse(event.data)
-    p [:message, data]
+    # p [:message, data]
 
-    if !data.has_key?('reply_to') && data['subtype'] != "bot_message"
-      if data['text'] =~ /(<@U5THEG8UA>).*(アーカイブして|保存して)/
+    if !data.has_key?('reply_to') && data['subtype'] != "bot_message" && data['channel']=='G5V08JHHQ'
+      if data['text'] =~ /(<@U5THEG8UA>).*(アーカイブ|保存|save)/
         if data['text'] =~ /<(https:\/\/kaz-max.slack.com\/archives\/.+)>/
           ws.send({
             type: 'message',
@@ -69,7 +69,7 @@ EM.run do
       end
     end
 
-    if data['text'] =~ /kazmax/i
+    if data['text'] =~ /superkazmax/i || data['text'] =~ /<@U5THEG8UA>/
       random_emoji = emoji.keys[rand(0..emoji.size-1)]
       ws.send({
         type: 'message',
