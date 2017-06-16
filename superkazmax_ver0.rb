@@ -35,7 +35,7 @@ EM.run do
     data = JSON.parse(event.data)
     p [:message, data]
 
-    if data['text'] =~ /kazmax!/i
+    if data['text'] =~ /kazmax/i
       random_emoji = emoji.keys[rand(0..emoji.size-1)]
       ws.send({
         type: 'message',
@@ -53,6 +53,27 @@ EM.run do
       }.to_json)
     end
 
+    if data['text'] =~ /お名前は/
+      r = rand(0..10)
+      if (r < 3)
+        ws.send({
+          type: 'message',
+          text: "Kaz-max",
+          channel: data['channel'],
+        }.to_json)
+      elsif (r < 7)
+        ws.send({
+          type: 'message',
+          text: "君は誰？",
+          channel: data['channel'],
+      else
+        ws.send({
+          type: 'message',
+          text: "ふふふ",
+          channel: data['channel'],
+      end
+    end
+
     if data['text'] =~ /おはよう/
       ws.send({
         type: 'message',
@@ -64,23 +85,34 @@ EM.run do
     if data['text'] =~ /ご招待/
       ws.send({
         type: 'message',
-        text: "チャネル登録はこちら https://kaz-max.herokuapp.com/",
+        text: "チャネル登録はこちら\n https://kaz-max.herokuapp.com/",
         channel: data['channel'],
       }.to_json)
     end
 
     if !data.has_key?('reply_to') && data['subtype'] != "bot_message"
-      if data['text'] =~ /<(https:\/\/kaz-max.slack.com\/archives\/.+)>/
-        ws.send({
-          type: 'message',
-          text: "エエ話や〜｡\n #{$1}",
-          channel: data['channel'],
-        }.to_json)
-      else
-        if data['text'] =~ /<(https?:\/\/.+)>/
+      if data['content'] =~ /@superkazmax/ && data['text'] =~ /アーカイブして|保存して/
+        if data['text'] =~ /<(https:\/\/kaz-max.slack.com\/archives\/.+)>/
+          ws.send({
+            type: 'message',
+            text: "エエ話や〜",
+            channel: data['channel'],
+          }.to_json)
+          ws.send({
+            type: 'message',
+            text: "#{$1}",
+            channel: "G5V08JHHQ",
+          }.to_json)
+        elsif data['text'] =~ /<(https?:\/\/.+)>/
           ws.send({
             type: 'message',
             text: "ふむふむ良記事\n #{$1}",
+            channel: data['channel'],
+          }.to_json)
+        else
+          ws.send({
+            type: 'message',
+            text: "(ニヤニヤ)",
             channel: data['channel'],
           }.to_json)
         end
