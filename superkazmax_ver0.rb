@@ -35,6 +35,35 @@ EM.run do
     data = JSON.parse(event.data)
     p [:message, data]
 
+    if !data.has_key?('reply_to') && data['subtype'] != "bot_message"
+      if data['content'] =~ /<@U5THEG8UA>/ && data['text'] =~ /アーカイブして|保存して/
+        if data['text'] =~ /<(https:\/\/kaz-max.slack.com\/archives\/.+)>/
+          ws.send({
+            type: 'message',
+            text: "エエ話や〜",
+            channel: data['channel'],
+          }.to_json)
+          ws.send({
+            type: 'message',
+            text: "#{$1}",
+            channel: "G5V08JHHQ",
+          }.to_json)
+        elsif data['text'] =~ /<(https?:\/\/.+)>/
+          ws.send({
+            type: 'message',
+            text: "ふむふむ良記事\n #{$1}",
+            channel: data['channel'],
+          }.to_json)
+        else
+          ws.send({
+            type: 'message',
+            text: "(ニヤニヤ)",
+            channel: data['channel'],
+          }.to_json)
+        end
+      end
+    end
+
     if data['text'] =~ /kazmax/i
       random_emoji = emoji.keys[rand(0..emoji.size-1)]
       ws.send({
@@ -92,34 +121,6 @@ EM.run do
       }.to_json)
     end
 
-    if !data.has_key?('reply_to') && data['subtype'] != "bot_message"
-      if data['content'] =~ /@superkazmax/ && data['text'] =~ /アーカイブして|保存して/
-        if data['text'] =~ /<(https:\/\/kaz-max.slack.com\/archives\/.+)>/
-          ws.send({
-            type: 'message',
-            text: "エエ話や〜",
-            channel: data['channel'],
-          }.to_json)
-          ws.send({
-            type: 'message',
-            text: "#{$1}",
-            channel: "G5V08JHHQ",
-          }.to_json)
-        elsif data['text'] =~ /<(https?:\/\/.+)>/
-          ws.send({
-            type: 'message',
-            text: "ふむふむ良記事\n #{$1}",
-            channel: data['channel'],
-          }.to_json)
-        else
-          ws.send({
-            type: 'message',
-            text: "(ニヤニヤ)",
-            channel: data['channel'],
-          }.to_json)
-        end
-      end
-    end
   end
 
   ws.on :close do |event|
