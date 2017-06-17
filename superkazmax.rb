@@ -89,6 +89,8 @@ EM.run do
     end
 
     if data['text'] =~ /#{SUPERKAZMAX}/ # 自分宛てのメンションのみ
+      kazmax.speak(data, text: "新宿の天気: #{weather_shinjuku}")
+
       if data['text'] =~ /お名前は/
         text = ['kazmax','スーパーkazmax',"#{KAZMAX}に聞いてください",'エリーツ最高','名乗るほどのものではありません'].sample
         kazmax.speak(data, text: text)
