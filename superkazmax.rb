@@ -67,6 +67,12 @@ EM.run do
     p [:message, data] # デバッグ時､JSONを吐き出させる用
 
     if !data.has_key?('reply_to') && data['subtype'] != "bot_message" && data['channel']!='C5V0WKG90' # 他のchatbotならスルー（無限ループ回避）､hall_of_kazmaxチャネルはスルー
+
+      if data['text'] =~ /kazmax/i || data['text'] =~ /カズマックス/ || data['text'] =~ /カズマさん/ || data['text'] =~ /一真さん/ # 呼びかけに反応
+        random_emoji = emoji.keys[rand(0..emoji.size-1)] # 絵文字をランダムに選ぶ
+        kazmax.speak(text: ":#{random_emoji}:", channel: data['channel'])
+      end
+
       if data['text'] =~ /#{SUPERKAZMAX}/ # 自分宛てのメンションのみ
         if data['text'] =~ /<(https:\/\/kaz-max.slack.com\/archives\/.+)>/ # Slack内のコメントリンク
           text = ['エエ話や〜', 'これはいいこと言っている', '微妙な発言ですがいいでしょう･･', '承知いたしました' ].sample
@@ -81,57 +87,57 @@ EM.run do
           kazmax.speak(data, text: text)
         end
       end
-    end
 
-    if data['text'] =~ /kazmax/i || data['text'] =~ /カズマックス/ || data['text'] =~ /カズマさん/ || data['text'] =~ /一真さん/ # 呼びかけに反応
-      random_emoji = emoji.keys[rand(0..emoji.size-1)] # 絵文字をランダムに選ぶ
-      kazmax.speak(text: ":#{random_emoji}:", channel: data['channel'])
-    end
+      if data['text'] =~ /#{SUPERKAZMAX}/ # 自分宛てのメンションのみ
+        weather_shinjuku = "http://www.tenki.jp/forecast/3/16/4410/13104-1hour.html"
+        kazmax.speak(data, text: "新宿の天気: #{weather_shinjuku}")
 
-    if data['text'] =~ /#{SUPERKAZMAX}/ # 自分宛てのメンションのみ
-      weather_shinjuku = "http://www.tenki.jp/forecast/3/16/4410/13104-1hour.html"
-      kazmax.speak(data, text: "新宿の天気: #{weather_shinjuku}")
+        if data['text'] =~ /お名前は/
+          text = ['kazmax','スーパーkazmax',"#{KAZMAX}に聞いてください",'エリーツ最高','名乗るほどのものではありません'].sample
+          kazmax.speak(data, text: text)
+        end
 
-      if data['text'] =~ /お名前は/
-        text = ['kazmax','スーパーkazmax',"#{KAZMAX}に聞いてください",'エリーツ最高','名乗るほどのものではありません'].sample
+        if data['text'] =~ /天気/
+          weather_iwate = "http://www.tenki.jp/forecast/2/6/3310/3214-1hour.html"
+          weather_shinjuku = "http://www.tenki.jp/forecast/3/16/4410/13104-1hour.html"
+          weather_kamakura = "http://www.tenki.jp/forecast/3/17/4610/14204-1hour.html"
+
+          if data['text'] =~ /(.+)の天気/
+            if $1 =~ /新宿/
+              kazmax.speak(data, text: "新宿の天気: #{weather_shinjuku}")
+            end
+            if $1 =~ /八幡平/
+              kazmax.speak(data, text: "八幡平の天気: #{weather_iwate}")
+            end
+            if $1 =~ /八幡平/
+              kazmax.speak(data, text: "鎌倉の天気: #{weather_kamakura}")
+            end
+          else
+            kazmax.speak(data, text: "八幡平の天気: #{weather_iwate}")
+            kazmax.speak(data, text: "新宿の天気: #{weather_shinjuku}")
+            kazmax.speak(data, text: "鎌倉の天気: #{weather_kamakura}")
+          end
+        end
+      end
+
+      if data['text'] =~ /こんにちは/
+        text = ["ご機嫌はいかがかな？<@#{data['user']}>さん", "おほほほほ", "<@#{data['user']}>さん､こんにちはー", "これ#{KAZMAX}､返事をしなさい"].sample
         kazmax.speak(data, text: text)
       end
 
-      if data['text'] =~ /天気/
-        weather_iwate = "http://www.tenki.jp/forecast/2/6/3310/3214-1hour.html"
-        weather_shinjuku = "http://www.tenki.jp/forecast/3/16/4410/13104-1hour.html"
-        weather_kamakura = "http://www.tenki.jp/forecast/3/17/4610/14204-1hour.html"
-
-        if data['text'] =~ /(.+)の天気/
-          if $1 =~ /新宿/
-            kazmax.speak(data, text: "新宿の天気: #{weather_shinjuku}")
-          end
-          if $1 =~ /八幡平/
-            kazmax.speak(data, text: "八幡平の天気: #{weather_iwate}")
-          end
-          if $1 =~ /八幡平/
-            kazmax.speak(data, text: "鎌倉の天気: #{weather_kamakura}")
-          end
-        else
-          kazmax.speak(data, text: "八幡平の天気: #{weather_iwate}")
-          kazmax.speak(data, text: "新宿の天気: #{weather_shinjuku}")
-          kazmax.speak(data, text: "鎌倉の天気: #{weather_kamakura}")
-        end
+      if data['text'] =~ /こんばんは/
+        text = ["こんばんは<@#{data['user']}>さん", "こんばんは！", "<@#{data['user']}>さんがんばってますね〜"].sample
+        kazmax.speak(data, text: text)
       end
-    end
 
-    if data['text'] =~ /こんにちは/
-      text = ["ご機嫌はいかがかな？<@#{data['user']}>さん", "おほほほほ", "<@#{data['user']}>さん､こんにちはー", "これ#{KAZMAX}､返事をしなさい"].sample
-      kazmax.speak(data, text: text)
-    end
+      if data['text'] =~ /おはよう/
+        text = ["おはようあなた♡","おはよー<@#{data['user']}>❗", "<@#{data['user']}>たんおっは〜♪", "<@#{data['user']}>､今日はいい一日になりますよ"].sample
+        kazmax.speak(data, text: text)
+      end
 
-    if data['text'] =~ /おはよう/
-      text = ["おはようあなた♡","おはよー<@#{data['user']}>❗", "<@#{data['user']}>たんおっは〜♪", "<@#{data['user']}>､今日はいい一日になりますよ"].sample
-      kazmax.speak(data, text: text)
-    end
-
-    if data['text'] =~ /ご招待/
-      kazmax.speak(data, text: "チャネル登録はこちら\n https://kaz-max.herokuapp.com/")
+      if data['text'] =~ /ご招待/
+        kazmax.speak(data, text: "チャネル登録はこちら\n https://kaz-max.herokuapp.com/")
+      end
     end
   end
 
