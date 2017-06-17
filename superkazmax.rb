@@ -64,10 +64,10 @@ EM.run do
 
   ws.on :message do |event|
     data = JSON.parse(event.data)
-    # p [:message, data] # デバッグ時､JSONを吐き出させる用
+    p [:message, data] # デバッグ時､JSONを吐き出させる用
 
     if !data.has_key?('reply_to') && data['subtype'] != "bot_message" && data['channel']!='C5V0WKG90' # 他のchatbotならスルー（無限ループ回避）､hall_of_kazmaxチャネルはスルー
-      if data['text'] =~ /SUPERKAZMAX/ # 自分宛てのメンションのみ
+      if data['text'] =~ /#{SUPERKAZMAX}/ # 自分宛てのメンションのみ
         if data['text'] =~ /<(https:\/\/kaz-max.slack.com\/archives\/.+)>/ # Slack内のコメントリンク
           text = ['エエ話や〜', 'これはいいこと言っている', '微妙な発言ですがいいでしょう･･', '承知いたしました' ].sample
           kazmax.speak(data, text: text)
@@ -88,7 +88,7 @@ EM.run do
       kazmax.speak(text: ":#{random_emoji}:", channel: data['channel'])
     end
 
-    if data['text'] =~ /SUPERKAZMAX/ # 自分宛てのメンションのみ
+    if data['text'] =~ /#{SUPERKAZMAX}/ # 自分宛てのメンションのみ
       if data['text'] =~ /お名前は/
         text = ['kazmax','スーパーkazmax',"#{KAZMAX}に聞いてください",'エリーツ最高','名乗るほどのものではありません'].sample
         kazmax.speak(data, text: text)
