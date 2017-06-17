@@ -1,1 +1,1 @@
-worker:  bundle exec ruby superkazmax_ver0.rb
+worker:  bundle exec ruby superkazmax.rb
