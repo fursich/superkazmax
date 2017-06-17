@@ -11,25 +11,6 @@ require 'eventmachine'
 # })
 # puts JSON.pretty_generate(JSON.parse(response.body))
 
-class Kazmax
-  def initialize(client)
-    @client = client
-  end
-
-  def speak(text: nil, channel: nil) # この処理が頻繁に出るのでクラスにまとめてみた
-    return if channel.nil? || text.nil?
-    @client.send({
-      type: 'message',
-      text: text,
-      channel: channel,
-    }.to_json)
-  end
-
-  def archive(text: nil)              # hall_of_kazmax投稿用
-    speak(text: text, channel: 'C5V0WKG90')
-  end
-end
-
 response = HTTP.post('https://slack.com/api/rtm.start', params: {
   token: ENV['SLACK_API_TOKEN'],
 })
@@ -45,7 +26,6 @@ emoji = rc['emoji'] # 絵文字の一覧取っておく
 
 EM.run do
   ws = Faye::WebSocket::Client.new(url)
-  kazmax = Kazmax.new(ws)
 
   ws.on :open do
     p [:open]
@@ -91,13 +71,12 @@ EM.run do
 
     if data['text'] =~ /kazmax/i || data['text'] =~ /カズマさん/ || data['text'] =~ /一真さん/ # 呼びかけに反応
       random_emoji = emoji.keys[rand(0..emoji.size-1)] # 絵文字をランダムに選ぶ
-      kazmax.speak(text: ":#{random_emoji}:", channel: data['channel'])
-      # ws.send({
-      #   type: 'message',
-      #   text: ":#{random_emoji}:",
-      #   channel: data['channel'],
-      #   timestamp: data['ts'],
-      # }.to_json)
+      ws.send({
+        type: 'message',
+        text: ":#{random_emoji}:",
+        channel: data['channel'],
+        timestamp: data['ts'],
+      }.to_json)
     end
 
     if data['text'] =~ /こんにちは/
