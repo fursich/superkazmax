@@ -89,6 +89,7 @@ EM.run do
     end
 
     if data['text'] =~ /#{SUPERKAZMAX}/ # 自分宛てのメンションのみ
+      weather_shinjuku = "http://www.tenki.jp/forecast/3/16/4410/13104-1hour.html"
       kazmax.speak(data, text: "新宿の天気: #{weather_shinjuku}")
 
       if data['text'] =~ /お名前は/
