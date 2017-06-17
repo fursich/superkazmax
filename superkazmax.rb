@@ -91,7 +91,7 @@ EM.run do
 
     if data['text'] =~ /kazmax/i || data['text'] =~ /カズマさん/ || data['text'] =~ /一真さん/ # 呼びかけに反応
       random_emoji = emoji.keys[rand(0..emoji.size-1)] # 絵文字をランダムに選ぶ
-      kazmax.speak(text: "#{random_emoji}", channel: data['channel'])
+      kazmax.speak(text: ":#{random_emoji}:", channel: data['channel'])
       # ws.send({
       #   type: 'message',
       #   text: ":#{random_emoji}:",
