@@ -70,7 +70,7 @@ EM.run do
 
       if data['text'] =~ /kazmax/i || data['text'] =~ /カズマックス/ || data['text'] =~ /カズマさん/ || data['text'] =~ /一真さん/ # 呼びかけに反応
         random_emoji = emoji.keys[rand(0..emoji.size-1)] # 絵文字をランダムに選ぶ
-        kazmax.speak(text: ":#{random_emoji}:", channel: data['channel'])
+        kazmax.speak(data, text: ":#{random_emoji}:")
       end
 
       if data['text'] =~ /#{SUPERKAZMAX}/ # 自分宛てのメンションのみ
