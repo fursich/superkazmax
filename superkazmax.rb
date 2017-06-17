@@ -22,11 +22,11 @@ class Bot                 # 毎回おなじような処理を書くのはツラ�
 
   def speak(data=nil, text: nil)
     return if data.nil?
-    speak(text: text, channel: data['channel'])
+    post(text: text, channel: data['channel'])
   end
 
   def archive(text: nil)              # hall_of_kazmax投稿用
-    speak(text: text, channel: HALL_OF_KAZMAX)
+    post(text: text, channel: HALL_OF_KAZMAX)
   end
 
   private
