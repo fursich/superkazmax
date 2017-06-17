@@ -66,7 +66,7 @@ EM.run do
     data = JSON.parse(event.data)
     p [:message, data] # デバッグ時､JSONを吐き出させる用
 
-    if !(data.has_key?('reply_to')) && data['subtype'] != "bot_message" && data['channel']!='C5V0WKG90' # 他のchatbotならスルー（無限ループ回避）､hall_of_kazmaxチャネルはスルー
+    if (!data['reply_to']) && data['subtype'] != "bot_message" && data['channel']!='C5V0WKG90' # 他のchatbotならスルー（無限ループ回避）､hall_of_kazmaxチャネルはスルー
 
       if data['text'] =~ /kazmax/i || data['text'] =~ /カズマックス/ || data['text'] =~ /カズマさん/ || data['text'] =~ /一真さん/ # 呼びかけに反応
         random_emoji = emoji.keys[rand(0..emoji.size-1)] # 絵文字をランダムに選ぶ
