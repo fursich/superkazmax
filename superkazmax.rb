@@ -11,7 +11,7 @@ require 'eventmachine'
 # })
 # puts JSON.pretty_generate(JSON.parse(response.body))
 
-class Kazmax
+class Bot
   def initialize(client)
     @client = client
   end
@@ -45,7 +45,7 @@ emoji = rc['emoji'] # 絵文字の一覧取っておく
 
 EM.run do
   ws = Faye::WebSocket::Client.new(url)
-  kazmax = Kazmax.new(ws)
+  kazmax = Bot.new(ws)
 
   ws.on :open do
     p [:open]
