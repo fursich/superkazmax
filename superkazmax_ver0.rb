@@ -22,7 +22,7 @@ response = HTTP.post('https://slack.com/api/emoji.list', params: {
   token: ENV['SLACK_API_TOKEN'],
 })
 rc = JSON.parse(response.body)
-emoji = rc['emoji']
+emoji = rc['emoji'] # 絵文字の一覧取っておく
 
 EM.run do
   ws = Faye::WebSocket::Client.new(url)
@@ -33,11 +33,11 @@ EM.run do
 
   ws.on :message do |event|
     data = JSON.parse(event.data)
-    # p [:message, data]
+    # p [:message, data] # デバッグ時､JSONを吐き出させる用
 
-    if !data.has_key?('reply_to') && data['subtype'] != "bot_message" && data['channel']!='C5V0WKG90'
-      if data['text'] =~ /(<@U5THEG8UA>)/
-        if data['text'] =~ /<(https:\/\/kaz-max.slack.com\/archives\/.+)>/
+    if !data.has_key?('reply_to') && data['subtype'] != "bot_message" && data['channel']!='C5V0WKG90' # 他のchatbotならスルー（無限ループ回避）､hall_of_kazmaxチャネルはスルー
+      if data['text'] =~ /(<@U5THEG8UA>)/ # 自分宛てのメンションのみ
+        if data['text'] =~ /<(https:\/\/kaz-max.slack.com\/archives\/.+)>/ # Slack内のコメントリンク
           ws.send({
             type: 'message',
             text: "エエ話や〜",
@@ -45,10 +45,10 @@ EM.run do
           }.to_json)
           ws.send({
             type: 'message',
-            text: "#{$1}",
+            text: "#{$1}", # ポスト､本当は中身を読み出して前後のブロックごと貼りたい･･
             channel: "C5V0WKG90",
           }.to_json)
-        elsif data['text'] =~ /<(https?:\/\/.+)>/
+        elsif data['text'] =~ /<(https?:\/\/.+)>/ # slack内ではない記事
           ws.send({
             type: 'message',
             text: "ふむふむ良記事",
@@ -69,8 +69,8 @@ EM.run do
       end
     end
 
-    if data['text'] =~ /kazmax/i || data['text'] =~ /カズマさん/
-      random_emoji = emoji.keys[rand(0..emoji.size-1)]
+    if data['text'] =~ /kazmax/i || data['text'] =~ /カズマさん/ || data['text'] =~ /一真さん/ # 呼びかけに反応
+      random_emoji = emoji.keys[rand(0..emoji.size-1)] # 絵文字をランダムに選ぶ
       ws.send({
         type: 'message',
         text: ":#{random_emoji}:",
