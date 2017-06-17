@@ -92,13 +92,14 @@ EM.run do
           weather_kamakura = "http://www.tenki.jp/forecast/3/17/4610/14204-1hour.html"
 
           if data['text'] =~ /(.+)の天気/
-            if $1 =~ /新宿/
+            target_place = $1
+            if target_place =~ /新宿/
               kazmax.speak(data, text: "新宿の天気: #{weather_shinjuku}")
             end
-            if $1 =~ /八幡平/
+            if target_place =~ /八幡平/
               kazmax.speak(data, text: "八幡平の天気: #{weather_iwate}")
             end
-            if $1 =~ /八幡平/
+            if target_place =~ /鎌倉/
               kazmax.speak(data, text: "鎌倉の天気: #{weather_kamakura}")
             end
           else
