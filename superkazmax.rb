@@ -46,7 +46,7 @@ class Bot                 # 毎回おなじような処理を書くのはツラ�
   end
 
   def aggregate_name
-    Regexp.union(/kazmax/, /カズマ/, /一真/ ) # 名前に反応
+    Regexp.union(/kazmax/, /カズマ/, /一真/, /かずま/) # 名前に反応
   end
 
   private
@@ -183,7 +183,7 @@ EM.run do
           text = ['呼びました？', '(ニヤニヤ)', "<@#{data['user']}>さん･･", "にゃーん❗", "す､す､す､すぽぽぽぽぽぽぽーん"].sample
           kazmax.speak(data, text: text, with_rate: 0.05)
           random_emoji = emoji.keys[rand(0..emoji.size-1)] # 絵文字をランダムに選ぶ
-          kazmax.speak(data, text: "#{random_emoji}")
+          kazmax.speak(data, text: ":#{random_emoji}:")
         end
       end
     end
