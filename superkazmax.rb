@@ -20,9 +20,13 @@ class Bot                 # 毎回おなじような処理を書くのはツラ�
     @client = client
   end
 
-  def speak(data=nil, text: nil)
+  def speak(data=nil, text: nil, with_rate: 1.0)
     return if data.nil?
+    if with_rate < 1.0
+      return false if rand(0.0..1.0) > with_rate
+    end
     post(text: text, channel: data['channel'])
+    true
   end
 
   def archive(text: nil)              # hall_of_kazmax投稿用
@@ -57,7 +61,7 @@ class Bot                 # 毎回おなじような処理を書くのはツラ�
   end
 end
 
-kazmax_version = 0.3
+kazmax_version = 0.4
 
 kazmax_commands = <<-'EOS'
 
@@ -108,7 +112,7 @@ EM.run do
 
     if !data.has_key?('reply_to') && data['subtype'] != "bot_message" && data['channel']!='C5V0WKG90' # 他のchatbotならスルー（無限ループ回避）､hall_of_kazmaxチャネルはスルー
 
-      if kazmax.named?(data['text']) # 呼びかけに反応
+      if kazmax.called?(data['text']) # 呼びかけに反応
         if data['text'] =~ /こんにちは/
           text = ["ご機嫌はいかがかな？<@#{data['user']}>さん", "おほほほほ", "<@#{data['user']}>さん､こんにちはー", "これ#{KAZMAX}､返事をしなさい"].sample
           kazmax.speak(data, text: text)
@@ -127,14 +131,8 @@ EM.run do
         elsif data['text'] =~ /お名前は/
           text = ['kazmax','スーパーkazmax',"#{KAZMAX}に聞いてください",'エリーツ最高','名乗るほどのものではありません'].sample
           kazmax.speak(data, text: text)
-        else
-          random_emoji = emoji.keys[rand(0..emoji.size-1)] # 絵文字をランダムに選ぶ
-          kazmax.speak(data, text: ":#{random_emoji}:")
-        end
-      end
 
-      if kazmax.mentioned?(data['text']) # 自分宛てのメンションのみ
-        if data['text'] =~ /<(https:\/\/kaz-max.slack.com\/archives\/.+)>/ # Slack内のコメントリンク
+        elsif data['text'] =~ /<(https:\/\/kaz-max.slack.com\/archives\/.+)>/ # Slack内のコメントリンク
           text = ['エエ話や〜', 'これはいいこと言っている', '微妙な発言ですがいいでしょう･･', '承知いたしました' ].sample
           kazmax.speak(data, text: text)
           kazmax.archive("#{$1}")
@@ -178,8 +176,11 @@ EM.run do
             kazmax.speak(data, text: "鎌倉の天気: #{weather_kamakura}")
           end
         else
-          text = ['呼びました？', '華麗にスルー', '(ニヤニヤ)', "<@#{data['user']}>さん･･", "#{kazmax_commands}"].sample
-          kazmax.speak(data, text: text)
+          text = ['呼びました？', '(ニヤニヤ)', "<@#{data['user']}>さん･･", "にゃーん❗"].sample
+          unless kazmax.speak(data, text: text, with_rate: 0.05)
+            random_emoji = emoji.keys[rand(0..emoji.size-1)] # 絵文字をランダムに選ぶ
+            kazmax.speak(data, text: text)
+          end
         end
       end
     end
