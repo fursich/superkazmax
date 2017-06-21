@@ -67,15 +67,7 @@ kazmax_commands = <<-'EOS'
 
   直接メンションするか､名前を呼んでみてください｡
 
-  @superkazmax (メンション)で執事機能を発揮します
-    天気               ･･･ 八幡平､鎌倉､新宿の天気を列挙します
-    ◯◯の天気         ･･･ 場所を絞りこんで表示する
-    ご招待             ･･･ チャネルへの招待方法など
-    (ハイパーリンク)   ･･･ 保管用チャネル(#hall_of_kazmax)にリンクを保存
-    ヘルプ or 使い方   ･･･ 使い方
-    バージョン         ･･･ バージョン
-
-  名前をよぶと日常会話に答えます(カズマ､一真､kazmaxという語彙に反応)
+  ◯日常会話に答えます(カズマ､一真､kazmaxという語彙に反応)
     おはよう
     こんにちは
     こんばんは
@@ -83,6 +75,16 @@ kazmax_commands = <<-'EOS'
     ありがとう
     名前は             ･･･ 名前とか
     何も該当しない     ･･･ 適当な絵文字を返す
+
+  ◯いくつかの質問には執事機能を発揮します
+    天気               ･･･ 八幡平､鎌倉､新宿の天気を列挙します
+    ◯◯の天気         ･･･ 場所を絞りこんで表示する
+    ご招待             ･･･ チャネルへの招待方法など
+    (ハイパーリンク)   ･･･ 保管用チャネル(#hall_of_kazmax)にリンクを保存
+
+    ヘルプ or 使い方   ･･･ 使い方
+    バージョン         ･･･ バージョン
+
 EOS
 
 response = HTTP.post('https://slack.com/api/rtm.start', params: {
@@ -176,11 +178,10 @@ EM.run do
             kazmax.speak(data, text: "鎌倉の天気: #{weather_kamakura}")
           end
         else
-          text = ['呼びました？', '(ニヤニヤ)', "<@#{data['user']}>さん･･", "にゃーん❗"].sample
-          unless kazmax.speak(data, text: text, with_rate: 0.05)
-            random_emoji = emoji.keys[rand(0..emoji.size-1)] # 絵文字をランダムに選ぶ
-            kazmax.speak(data, text: text)
-          end
+          text = ['呼びました？', '(ニヤニヤ)', "<@#{data['user']}>さん･･", "にゃーん❗", "す､す､す､すぽぽぽぽぽぽぽーん"].sample
+          kazmax.speak(data, text: text, with_rate: 0.05)
+          random_emoji = emoji.keys[rand(0..emoji.size-1)] # 絵文字をランダムに選ぶ
+          kazmax.speak(data, text: "#{random_emoji}")
         end
       end
     end
