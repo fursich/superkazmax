@@ -59,7 +59,7 @@ end
 
 kazmax_version = 0.3
 
-kazmax_commands = << 'EOS'
+kazmax_commands = <<'EOS'
 
   直接メンションするか､名前を呼んでみてください｡
 
