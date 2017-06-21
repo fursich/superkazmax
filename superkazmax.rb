@@ -59,7 +59,7 @@ end
 
 kazmax_version = 0.3
 
-kazmax_commands = <<'EOS'
+kazmax_commands = <<-'EOS'
 
   直接メンションするか､名前を呼んでみてください｡
 
@@ -79,7 +79,6 @@ kazmax_commands = <<'EOS'
     ありがとう
     名前は             ･･･ 名前とか
     何も該当しない     ･･･ 適当な絵文字を返す
-
 EOS
 
 response = HTTP.post('https://slack.com/api/rtm.start', params: {
