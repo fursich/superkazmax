@@ -76,6 +76,7 @@ kazmax_commands = << 'EOS'
     こんにちは
     こんばんは
     おやすみ
+    ありがとう
     名前は             ･･･ 名前とか
     何も該当しない     ･･･ 適当な絵文字を返す
 
@@ -120,6 +121,9 @@ EM.run do
           kazmax.speak(data, text: text)
         elsif data['text'] =~ /おやすみ/
           text = ["おやすみ あ･な･た♡", "<@#{data['user']}>さん､良い夢を", "Goodnight♪", "<@#{data['user']}>さん､おやすみなさい"].sample
+          kazmax.speak(data, text: text)
+        elsif data['text'] =~ /ありがとう/
+          text = ["こちらこそ♡", "サマサマ〜", "<@#{data['user']}>さん､いつも感謝してますよ"].sample
           kazmax.speak(data, text: text)
         elsif data['text'] =~ /お名前は/
           text = ['kazmax','スーパーkazmax',"#{KAZMAX}に聞いてください",'エリーツ最高','名乗るほどのものではありません'].sample
