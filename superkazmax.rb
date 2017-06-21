@@ -129,6 +129,9 @@ EM.run do
           kazmax.speak(data, text: text)
         elsif data['text'] =~ /ありがとう/
           text = ["こちらこそ♡", "サマサマ〜", "<@#{data['user']}>さん､いつも感謝してますよ"].sample
+        elsif data['text'] =~ /おつかれ/
+          text = ["おつかれさま あ･な･た♡", "<@#{data['user']}>さん､頑張りましたね", "おつかれさまです❗", "<@#{data['user']}>さん､そろそろメンタリングしますか？"].sample
+          kazmax.speak(data, text: text)
           kazmax.speak(data, text: text)
         elsif data['text'] =~ /お名前は/
           text = ['kazmax','スーパーkazmax',"#{KAZMAX}に聞いてください",'エリーツ最高','名乗るほどのものではありません'].sample
