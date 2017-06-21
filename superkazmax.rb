@@ -104,7 +104,7 @@ EM.run do
 
   ws.on :message do |event|
     data = JSON.parse(event.data)
-    p [:message, data] # デバッグ時､JSONを吐き出させる用
+    # p [:message, data] # デバッグ時､JSONを吐き出させる用
 
     if !data.has_key?('reply_to') && data['subtype'] != "bot_message" && data['channel']!='C5V0WKG90' # 他のchatbotならスルー（無限ループ回避）､hall_of_kazmaxチャネルはスルー
 
@@ -169,7 +169,7 @@ EM.run do
                 kazmax.speak(data, text: "？？")
               else
                 text = ["#{target_place}ってどこでしょう", "#{target_place}？", "しらんがな", "地震･雷･火事･オヤジ"].sample
-                kazmax.speak(data, text: )
+                kazmax.speak(data, text: text)
               end
             end
           else
