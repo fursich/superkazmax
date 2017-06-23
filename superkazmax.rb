@@ -118,7 +118,7 @@ EM.run do
         if data['text'] =~ /こんにちは/
           text = ["ナマステ", "ご機嫌はいかがかな？<@#{data['user']}>さん", "おほほほほ", "<@#{data['user']}>さん､こんにちはー", "これ#{KAZMAX}､返事をしなさい"].sample
           kazmax.speak(data, text: text)
-        elsif data['text'] =~ /もうかりまっか | もうかってまっか/
+        elsif data['text'] =~ /もうかりまっか/
           text = ["ぼちぼちでんな"].sample
           kazmax.speak(data, text: text)
         elsif data['text'] =~ /ごめん/
