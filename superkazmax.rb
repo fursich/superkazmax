@@ -116,10 +116,16 @@ EM.run do
 
       if kazmax.called?(data['text']) # 呼びかけに反応
         if data['text'] =~ /こんにちは/
-          text = ["ご機嫌はいかがかな？<@#{data['user']}>さん", "おほほほほ", "<@#{data['user']}>さん､こんにちはー", "これ#{KAZMAX}､返事をしなさい"].sample
+          text = ["ナマステ", "ご機嫌はいかがかな？<@#{data['user']}>さん", "おほほほほ", "<@#{data['user']}>さん､こんにちはー", "これ#{KAZMAX}､返事をしなさい"].sample
+          kazmax.speak(data, text: text)
+        elsif data['text'] =~ /もうかりまっか | もうかってまっか/
+          text = ["ぼちぼちでんな"].sample
+          kazmax.speak(data, text: text)
+        elsif data['text'] =~ /ごめん/
+          text = ["こちらこそごめんなさい", "いいんだベイビー", "気にするなよブラザー", "どんまい", "ファンタ買ってこい"].sample
           kazmax.speak(data, text: text)
         elsif data['text'] =~ /おはよう/
-          text = ["おはようあなた♡","おはよー<@#{data['user']}>❗", "<@#{data['user']}>たんおっは〜♪", "<@#{data['user']}>､今日はいい一日になりますよ"].sample
+          text = ["おはよう あ･な･た♡", "ひゅーひゅー", "おはよー<@#{data['user']}>❗", "<@#{data['user']}>たんおっは〜♪", "<@#{data['user']}>､今日はいい一日になりますよ"].sample
           kazmax.speak(data, text: text)
         elsif data['text'] =~ /こんばんは/
           text = ["こんばんは<@#{data['user']}>さん", "こんばんは！", "<@#{data['user']}>さんがんばってますね〜"].sample
@@ -140,11 +146,11 @@ EM.run do
         elsif data['text'] =~ /<(https:\/\/kaz-max.slack.com\/archives\/.+)>/ # Slack内のコメントリンク
           text = ['エエ話や〜', 'これはいいこと言っている', '微妙な発言ですがいいでしょう･･', '承知いたしました' ].sample
           kazmax.speak(data, text: text)
-          kazmax.archive("#{$1}")
+          kazmax.archive(text: "#{$1}")
         elsif data['text'] =~ /<(https?:\/\/.+)>/ # slack内ではない記事
           text = ['ふむふむ良記事', 'おっこれは', 'りょ', 'すぽぽぽぽぽぽぽーん❗' , '保管します'].sample
           kazmax.speak(data, text: text)
-          kazmax.archive("#{$1}")
+          kazmax.archive(text: "#{$1}")
         elsif data['text'] =~ /help | ヘルプ | 使い方/i
           kazmax.speak(data, text: kazmax_commands)
         elsif data['text'] =~ /version | バージョン/i
