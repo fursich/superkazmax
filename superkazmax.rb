@@ -8,7 +8,7 @@ require 'eventmachine'
 KAZMAX = '<@U579AK65C>'.freeze
 SUPERKAZMAX = '<@U5THEG8UA>'.freeze
 HALL_OF_KAZMAX = 'C5V0WKG90'.freeze
-URL_MASA = 'http://jigokuno.com/cid_13.html?p='  # p=5くらいまである
+URL_MASA = 'http://jigokuno.com/cid_13.html?p='.freeze  # p=5くらいまである
 
 # response = HTTP.post('https://slack.com/api/chat.postMessage', params: {
 #   token: ENV['SLACK_API_TOKEN'],
@@ -69,7 +69,7 @@ doc = Nokogiri::HTML.parse(request.body)
 pics = doc.xpath('//div[@class="article-body"]//img[@src]')
 @horesase_words = []
 pics.each do |node|
-  @horesase_words = [node.attribute('src').value(), node.attribute('alt').value()]
+  @horesase_words << [node.attribute('src').value(), node.attribute('alt').value()]
 end
 
 
