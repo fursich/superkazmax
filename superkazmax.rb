@@ -9,6 +9,11 @@ KAZMAX = '<@U579AK65C>'.freeze
 SUPERKAZMAX = '<@U5THEG8UA>'.freeze
 HALL_OF_KAZMAX = 'C5V0WKG90'.freeze
 URL_MASA = 'http://jigokuno.com/cid_13.html?p='.freeze  # p=5くらいまである
+URL_TENKI = {
+  "八幡平": "http://www.tenki.jp/forecast/2/6/3310/3214-daily.html",
+  "新宿": "http://www.tenki.jp/forecast/3/16/4410/13104-daily.html",
+  "鎌倉": "http://www.tenki.jp/forecast/3/17/4610/14204-daily.html",
+}
 
 # response = HTTP.post('https://slack.com/api/chat.postMessage', params: {
 #   token: ENV['SLACK_API_TOKEN'],
@@ -73,6 +78,54 @@ end
   pics.each do |node|
     @horesase_words << [node.attribute('src').value(), node.attribute('alt').value()]
   end
+end
+
+class Tenki
+  def initialize(area, url)
+    @area = area
+    @url = url
+  end
+
+  def page
+    request = RestClient.get(@url)
+    @doc = Nokogiri::HTML.parse(request.body)
+  end
+
+  def weather_of_day
+    wd = @doc.xpath('//div[@id="townLeftOneBox"]//div[@class="weatherIconFlash"]//img')
+    wd.attribute('title').value()
+  end
+
+  def precips
+    result = {}
+    prc = @doc.xpath('//div[@id="townLeftOneBox"]//div[@id="precip-table"]//tr[@class="rainProbability"]/td')
+    prc.each.with_index do |precip,i|
+      result[timeslot[i]] = precip.text unless precip.text == '---'
+    end
+  end
+
+  def comment
+    text = ["今日の#{@area}の天気は #{weather_of_day} のようですね｡\n"]
+    text << ["降水確率はこのように出ていますよ｡\n"]
+    precips.each do |tm, precip|
+      text << "#{tm}時: #{precip}\n"
+    end
+    text.join
+  end
+
+  def timeslot
+    %w(
+    00-06
+    06-12
+    12-18
+    18-24
+    )
+  end
+end
+
+@tenki = {}
+URL_TENKI.each do |area, url|
+  @tenki[area] = Tenki.new(url)
 end
 
 kazmax_version = 0.5
@@ -157,7 +210,7 @@ EM.run do
           text = ['kazmax','スーパーkazmax',"#{KAZMAX}に聞いてください",'エリーツ最高','名乗るほどのものではありません'].sample
           kazmax.speak(data, text: text)
 
-        elsif data['text'] =~ /イケメン|カッコイイ|オトコマエ|抱いて|惚れ|ほれ|かっこいい|好き|男前|ステキ|素敵|ハンサムモテ男|女好き|女たらし/
+        elsif data['text'] =~ /イケメン|モテメン|カッコイイ|オトコマエ|口説いて|抱いて|惚れ|ほれ|かっこいい|好き|男前|ステキ|素敵|ハンサムモテ男|女好き|女たらし/
           words = @horesase_words.sample
           kazmax.speak(data, text: words[0])
           # kazmax.speak(data, text: words[1])
@@ -184,13 +237,13 @@ EM.run do
           if data['text'] =~ /(.+)の天気/
             target_place = $1
             if target_place =~ /新宿/
-              kazmax.speak(data, text: "新宿の天気: #{weather_shinjuku}")
+              kazmax.speak(data, text: @tenki['新宿'].comment)
             end
             if target_place =~ /八幡平/
-              kazmax.speak(data, text: "八幡平の天気: #{weather_iwate}")
+              kazmax.speak(data, text: @tenki['八幡平'].comment)
             end
             if target_place =~ /鎌倉/
-              kazmax.speak(data, text: "鎌倉の天気: #{weather_kamakura}")
+              kazmax.speak(data, text: @tenki['鎌倉'].comment)
             end
             if !target_place =~ /新宿|八幡平|鎌倉/
               if target_place.nil?
