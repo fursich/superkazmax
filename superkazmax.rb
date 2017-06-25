@@ -88,25 +88,25 @@ class Tenki
 
   def page
     request = RestClient.get(@url)
-    @doc = Nokogiri::HTML.parse(request.body)
+    Nokogiri::HTML.parse(request.body)
   end
 
   def weather_of_day
-    wd = @doc.xpath('//div[@id="townLeftOneBox"]//div[@class="weatherIconFlash"]//img')
+    wd = page.xpath('//div[@id="townLeftOneBox"]//div[@class="weatherIconFlash"]//img')
     wd.attribute('title').value()
   end
 
   def precips
     result = {}
-    prc = @doc.xpath('//div[@id="townLeftOneBox"]//div[@id="precip-table"]//tr[@class="rainProbability"]/td')
-    prc.each.with_index do |precip,i|
-      result[timeslot[i]] = precip.text unless precip.text == '---'
+    prcs = page.xpath('//div[@id="townLeftOneBox"]//div[@id="precip-table"]//tr[@class="rainProbability"]/td')
+    timeslot.zip(prcs).each do |t, precip|
+      result[t] = precip.text unless precip.text == '---'
     end
   end
 
   def comment
-    text = ["今日の#{@area}の天気は #{weather_of_day} のようですね｡\n"]
-    text << ["降水確率はこのように出ていますよ｡\n"]
+    text = ["今日の#{@area}の天気は#{weather_of_day}のようですね｡\n"]
+    text << ["降水確率はこのように出ています｡\n"]
     precips.each do |tm, precip|
       text << "#{tm}時: #{precip}\n"
     end
