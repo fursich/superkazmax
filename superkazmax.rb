@@ -210,7 +210,7 @@ EM.run do
           text = ['kazmax','スーパーkazmax',"#{KAZMAX}に聞いてください",'エリーツ最高','名乗るほどのものではありません'].sample
           kazmax.speak(data, text: text)
 
-        elsif data['text'] =~ /イケメン|モテメン|カッコイイ|オトコマエ|口説いて|抱いて|惚れ|ほれ|かっこいい|好き|男前|ステキ|素敵|ハンサムモテ男|女好き|女たらし/
+        elsif data['text'] =~ /今日の|イケメン|モテメン|カッコイイ|オトコマエ|口説いて|抱いて|惚れ|ほれ|かっこいい|好き|男前|ステキ|素敵|ハンサムモテ男|女好き|女たらし/
           words = @horesase_words.sample
           kazmax.speak(data, text: words[0])
           # kazmax.speak(data, text: words[1])
@@ -231,7 +231,7 @@ EM.run do
           kazmax.speak(data, text: "チャネル登録はこちら\n https://kaz-max.herokuapp.com/")
 
         elsif data['text'] =~ /天気/
-          closing_comments = ["今日も良い一日を〜", "気をつけてお出かけください", "洗濯物乾くかな", "風邪を引かれぬよう〜くしゃん", "いつでも聞いてくださいね❗"]
+          closing_comments = ["今日も良い一日を♡", "気をつけてお出かけください♪", "洗濯物乾くかな･･?", "風邪を引かれぬよう〜｡(くしゃん)", "いつでも聞いてくださいね❗"]
 
           if data['text'] =~ /(.+)の天気/
             target_place = $1
