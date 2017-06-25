@@ -125,7 +125,7 @@ end
 
 @tenki = {}
 URL_TENKI.each do |area, url|
-  @tenki[area] = Tenki.new(url)
+  @tenki[area] = Tenki.new(area,url)
 end
 
 kazmax_version = 0.5
