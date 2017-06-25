@@ -10,9 +10,9 @@ SUPERKAZMAX = '<@U5THEG8UA>'.freeze
 HALL_OF_KAZMAX = 'C5V0WKG90'.freeze
 URL_MASA = 'http://jigokuno.com/cid_13.html?p='.freeze  # p=5くらいまである
 URL_TENKI = {
-  "八幡平": "http://www.tenki.jp/forecast/2/6/3310/3214-daily.html",
-  "新宿": "http://www.tenki.jp/forecast/3/16/4410/13104-daily.html",
-  "鎌倉": "http://www.tenki.jp/forecast/3/17/4610/14204-daily.html",
+  "八幡平" => "http://www.tenki.jp/forecast/2/6/3310/3214-daily.html",
+  "新宿"   => "http://www.tenki.jp/forecast/3/16/4410/13104-daily.html",
+  "鎌倉"   => "http://www.tenki.jp/forecast/3/17/4610/14204-daily.html",
 }
 
 # response = HTTP.post('https://slack.com/api/chat.postMessage', params: {
