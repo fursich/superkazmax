@@ -256,9 +256,10 @@ EM.run do
               end
             end
           else
-            URL_TENKI.each do |area, url|
-              kazmax.speak(data, text: "#{area}の天気: #{url}")
+            URL_TENKI.each do |area, _|
+              kazmax.speak(data, text: @tenki[area].comment)
             end
+            kazmax.speak(data, text: closing_comments.sample)
           end
         else
           text = ['呼びました？', '(ニヤニヤ)', "<@#{data['user']}>さん･･", "にゃーん❗", "す､す､す､すぽぽぽぽぽぽぽーん"].sample
