@@ -64,14 +64,16 @@ class Bot                 # 毎回おなじような処理を書くのはツラ�
   end
 end
 
-request = RestClient.get(URL_MASA+'1')
-doc = Nokogiri::HTML.parse(request.body)
-pics = doc.xpath('//div[@class="article-body"]//img[@src]')
 @horesase_words = []
-pics.each do |node|
-  @horesase_words << [node.attribute('src').value(), node.attribute('alt').value()]
-end
 
+1.upto 21 do |page|
+  request = RestClient.get("#{URL_MASA}#{page}")
+  doc = Nokogiri::HTML.parse(request.body)
+  pics = doc.xpath('//div[@class="article-body"]//img[@src]')
+  pics.each do |node|
+    @horesase_words << [node.attribute('src').value(), node.attribute('alt').value()]
+  end
+end
 
 kazmax_version = 0.5
 
@@ -155,10 +157,11 @@ EM.run do
           text = ['kazmax','スーパーkazmax',"#{KAZMAX}に聞いてください",'エリーツ最高','名乗るほどのものではありません'].sample
           kazmax.speak(data, text: text)
 
-        elsif data['text'] =~ /イケメン|カッコイイ|オトコマエ|惚れた|ほれた|かっこいい|好き|男前|ハンサムモテ男|女好き|女たらし/
+        elsif data['text'] =~ /イケメン|カッコイイ|オトコマエ|抱いて|惚れ|ほれ|かっこいい|好き|男前|ステキ|素敵|ハンサムモテ男|女好き|女たらし/
           words = @horesase_words.sample
           kazmax.speak(data, text: words[0])
-          kazmax.speak(data, text: words[1])
+          # kazmax.speak(data, text: words[1])
+
         elsif data['text'] =~ /<(https:\/\/kaz-max.slack.com\/archives\/.+)>/ # Slack内のコメントリンク
           text = ['エエ話や〜', 'これはいいこと言っている', '微妙な発言ですがいいでしょう･･', '承知いたしました' ].sample
           kazmax.speak(data, text: text)
