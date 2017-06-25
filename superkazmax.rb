@@ -231,9 +231,9 @@ EM.run do
           kazmax.speak(data, text: "チャネル登録はこちら\n https://kaz-max.herokuapp.com/")
 
         elsif data['text'] =~ /天気/
-          if data['text'] =~ /(.+)の天気/
-            closing_comments = ["今日も良い一日を〜", "気をつけてお出かけください", "洗濯物乾くかな", "風邪を引かれぬよう〜くしゃん", "いつでも聞いてくださいね❗"]
+          closing_comments = ["今日も良い一日を〜", "気をつけてお出かけください", "洗濯物乾くかな", "風邪を引かれぬよう〜くしゃん", "いつでも聞いてくださいね❗"]
 
+          if data['text'] =~ /(.+)の天気/
             target_place = $1
             if target_place =~ /新宿/
               kazmax.speak(data, text: @tenki['新宿'].comment)
