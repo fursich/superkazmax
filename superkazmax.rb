@@ -229,21 +229,23 @@ EM.run do
           kazmax.speak(data, text: "#{kazmax_version}")
         elsif data['text'] =~ /ご招待/
           kazmax.speak(data, text: "チャネル登録はこちら\n https://kaz-max.herokuapp.com/")
-        elsif data['text'] =~ /天気/
-          weather_iwate = "http://www.tenki.jp/forecast/2/6/3310/3214-1hour.html"
-          weather_shinjuku = "http://www.tenki.jp/forecast/3/16/4410/13104-1hour.html"
-          weather_kamakura = "http://www.tenki.jp/forecast/3/17/4610/14204-1hour.html"
 
+        elsif data['text'] =~ /天気/
           if data['text'] =~ /(.+)の天気/
+            closing_comments = ["今日も良い一日を〜", "気をつけてお出かけください", "洗濯物乾くかな", "風邪を引かれぬよう〜くしゃん", "いつでも聞いてくださいね❗"]
+
             target_place = $1
             if target_place =~ /新宿/
               kazmax.speak(data, text: @tenki['新宿'].comment)
+              kazmax.speak(data, text: closing_comments.sample)
             end
             if target_place =~ /八幡平/
               kazmax.speak(data, text: @tenki['八幡平'].comment)
+              kazmax.speak(data, text: closing_comments.sample)
             end
             if target_place =~ /鎌倉/
               kazmax.speak(data, text: @tenki['鎌倉'].comment)
+              kazmax.speak(data, text: closing_comments.sample)
             end
             if !target_place =~ /新宿|八幡平|鎌倉/
               if target_place.nil?
@@ -254,9 +256,9 @@ EM.run do
               end
             end
           else
-            kazmax.speak(data, text: "八幡平の天気: #{weather_iwate}")
-            kazmax.speak(data, text: "新宿の天気: #{weather_shinjuku}")
-            kazmax.speak(data, text: "鎌倉の天気: #{weather_kamakura}")
+            URL_TENKI.each do |area, url|
+              kazmax.speak(data, text: "#{area}の天気: #{url}")
+            end
           end
         else
           text = ['呼びました？', '(ニヤニヤ)', "<@#{data['user']}>さん･･", "にゃーん❗", "す､す､す､すぽぽぽぽぽぽぽーん"].sample
